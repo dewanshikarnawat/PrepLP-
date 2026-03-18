@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semesters</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .semester-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .folder {
+            background: #4f46e5;
+            color: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .folder:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            background: #4338ca;
+        }
+        .feedback-wrapper {
+    max-width: 900px;
+    margin: 60px auto 0;
+}
+
+.feedback-box {
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+.feedback-box h2 {
+    margin-top: 0;
+    color: #4f46e5;
+    font-size: 22px;
+    text-align: left;
+}
+
+.feedback-box textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    resize: none;
+    outline: none;
+}
+
+.feedback-box textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.feedback-box button {
+    margin-top: 16px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.feedback-box button:hover {
+    background: #4338ca;
+}
+
+    </style>
+    
+</head>
+{% if messages %}
+<div id="toast-container" style="
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+">
+  {% for message in messages %}
+    <div style="
+      background: #22c55e;
+      color: white;
+      padding: 16px 22px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    ">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  setTimeout(() => {
+    const toast = document.getElementById("toast-container");
+    if (toast) toast.remove();
+  }, 3000);
+</script>
+{% endif %}
+
+<body>
+    <h2>{{ program.name }} - Semesters</h2>
+
+    <div class="semester-container">
+        {% for sem in semesters %}
+        <a href="{% url 'view_semester' program.name sem.name %}">
+            <div class="folder">{{ sem.name }}</div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="feedback-wrapper">
+    <div class="feedback-box">
+        <h2>💬 Feedback</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="message" rows="4"
+                placeholder="Tell us what you think about the study material, UI, or content..."
+                required></textarea>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="{% static 'mahipal/css/dist/styles.css' %}">
+  {% tailwind_css %}
+</head>
+<body class="relative bg-gray-50 flex flex-col justify-center items-center h-screen"
+      style="background-image: url('{% static 'mahipal/images/img.jpeg' %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
+      
+<!-- <body class=> -->
+  <h1 class="text-4xl font-bold text-green-600">Welcome, {{ user.username }} 👋</h1>
+  <p class="text-gray-600 mt-2">You are logged in successfully 🎉</p>
+  <br>
+  <h1 class="text-3xl font-bold text-center mt-8">Programs</h1>
+
+<!-- Folder Grid -->
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-5xl px-4">
+
+  {% for program in programs %}
+  <a href="{% url 'view_program' program.name %}" 
+     class="group block">
+
+    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200 
+                group-hover:shadow-xl group-hover:border-green-500
+                transition-all duration-300 cursor-pointer flex flex-col 
+                items-center justify-center">
+
+      <!-- Folder Icon -->
+      <div class="w-16 h-12 bg-yellow-400 rounded-md mb-3 
+                  group-hover:bg-yellow-500 transition"></div>
+
+      <!-- Program Name -->
+      <p class="text-xl font-semibold text-gray-700 
+                group-hover:text-green-600 transition">
+        {{ program.name }}
+      </p>
+
+    </div>
+  </a>
+  {% endfor %}
+
+</div>
+
+<a href="{% url 'logout' %}" 
+     class="mt-6 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+     Logout
+  </a>
+</body>
+</html>

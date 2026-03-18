@@ -1,0 +1,74 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$WuVIHL9qZcB9yMeXr4AuaF$WFDQftqCSMYtOXGuF7bX+dFkYa1anjzOdCySUg4Nv0I=",
+    "last_login": "2026-01-25T10:52:46.343Z",
+    "is_superuser": false,
+    "username": "Userx",
+    "first_name": "",
+    "last_name": "",
+    "email": "userx@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-11-16T14:53:19.406Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cbBJfStydfoSH7OXPTRsSl$M5ZB4dV8GngZoorHckYMBroV2tU8/i+Ff/hLfWcad94=",
+    "last_login": "2025-11-22T14:00:04.301Z",
+    "is_superuser": false,
+    "username": "MAHIPAL2",
+    "first_name": "",
+    "last_name": "",
+    "email": "mahipalrao.btech2023@spsu.ac.in",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-11-22T13:59:13.211Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$izr4hMG5z1bIqwS1T3Po7N$scpgQODlCloFK97m2Ra0yqy3PkkR7+Jidsy7FFSjKuI=",
+    "last_login": "2025-11-25T09:56:13.585Z",
+    "is_superuser": false,
+    "username": "Deepanshi",
+    "first_name": "",
+    "last_name": "",
+    "email": "deepanshi.btech2023@spsu.ac.in",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-11-25T09:55:39.843Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$1pjFU7s8AlKP3HGbyNRh8E$YExkQA26zvpqDsf5AdhECRFcb65WmZSsmUtJpcCe1nA=",
+    "last_login": "2025-12-24T19:22:03.155Z",
+    "is_superuser": true,
+    "username": "mahipalsinghrao",
+    "first_name": "",
+    "last_name": "",
+    "email": "mahipalsinghraomp@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-18T20:00:06.381Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

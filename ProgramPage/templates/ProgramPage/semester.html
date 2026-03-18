@@ -1,0 +1,516 @@
+{% comment %} {% load static tailwind_tags %} {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ semester.name }} – Study Material</title>
+    
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            background: linear-gradient(90deg, #4f46e5, #6366f1);
+            color: white;
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+
+        /* ===== APP LAYOUT ===== */
+        .app {
+            display: grid;
+            grid-template-columns: 260px 320px 1fr;
+            height: calc(100vh - 64px);
+        }
+
+
+        /* ===== SIDEBAR (CHATGPT BEHAVIOR, YOUR STYLE) ===== */
+        .sidebar {
+            background: #ffffff;
+            border-right: none;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.05);
+        }
+
+
+        .sidebar-header {
+            border-bottom: 3px solid #4f46e5;
+            padding: 16px;
+            font-weight: 600;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .subject-list {
+            border-bottom: 3px solid #4f46e5;
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .subject {
+    background: #eef2ff;
+    color: #3730a3;
+    padding: 10px 14px;
+    border-radius: 999px;   /* pill */
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+.subject:hover {
+    background: #4f46e5;
+    color: white;
+    transform: translateX(4px);
+}
+.subject.active {
+    background: #4f46e5;
+    color: white;
+}
+
+
+        /* ===== UPLOAD (BOTTOM SIDEBAR) ===== */
+        .upload-box {
+    background: #f9fafb;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+
+        .upload-box h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .upload-box label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .upload-box input,
+        .upload-box select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .upload-box button {
+            margin-top: 14px;
+            width: 100%;
+            background: #4f46e5;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .upload-box button:hover {
+            background: #4338ca;
+        }
+
+        .material-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .material-box h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #374151;
+            font-size: 18px;
+        }
+
+
+        /* ===== MAIN CONTENT ===== */
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #2c3e50;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 6px;
+        }
+
+        .note-list {
+            list-style: none;
+            padding: 0;
+        }
+        aside.sidebar {
+            overflow-y: auto;
+        }
+  
+        .note {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    border: 1px solid #e5e7eb;
+}
+
+
+        .note a {
+            text-decoration: none;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .note.request {
+    background: #eef2ff;
+    border-left: 5px solid #4f46e5;
+}
+
+
+        .note a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+        .open-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .open-btn:hover {
+            background: #4338ca;
+        }
+
+        .delete-btn {
+            background: #e11d48;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #be123c;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar">
+    {{ semester.name }} – Study Material
+</div>
+
+<div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    
+    <aside class="sidebar">
+        <div class="upload-box">
+            <h4>Upload Note</h4>
+
+            <form method="POST" action= {% url 'view_semester' semester.program.name semester.name %}
+ enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label>Subject</label>
+                <select name="subject" required>
+                    <option value="">Select subject</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Title</label>
+                <input type="text" name="title" required>
+
+                <label>PDF File</label>
+                <input type="file" name="file" required>
+
+                <button type="submit" name="upload_note" >Upload</button>
+            </form>
+        </div>
+        <div class="upload-box">
+            <h4>Upload PYQ</h4>
+
+            <form method="POST"
+                action="{% url 'view_semester' semester.program.name semester.name %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label>Subject</label>
+                <select name="subject" required>
+                    <option value="">Select subject</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Title</label>
+                <input type="text" name="title" placeholder="e.g. OS PYQ 2023" required>
+
+                <label>PDF File</label>
+                <input type="file" name="file" required>
+
+                <!-- THIS IS IMPORTANT -->
+                <button type="submit" name="upload_pyq">
+                    Upload PYQ
+                </button>
+            </form>
+        </div>
+
+
+    </aside>
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            Subjects
+        </div>
+
+        <div class="subject-list">
+            {% for subject in subjects %}
+            <div class="subject" onclick="showSubject('{{ subject.id }}')">
+                {{ subject.name }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="upload-box">
+            <h4>📌 Request Study Material</h4>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label>Subject</label>
+                <select name="subject" required>
+                <option value="">Select subject</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+
+                <label>Your Requirement</label>
+                <textarea name="message"
+                  rows="3"
+                  placeholder="e.g. I need Operating System unit 3 notes"
+                  required></textarea>
+
+                <button type="submit" name="request_note">
+                    Post Request
+                </button>
+            </form>
+        </div>
+
+    </aside>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="content">
+
+        {% for subject in subjects %}
+        <div id="subject-{{ subject.id }}" class="hidden content-card">
+
+
+            <h3>{{ subject.name }}</h3>
+
+            {% comment %} <div class="material-grid"> {% endcomment %}
+
+                <!-- ===== STUDY NOTES ===== -->
+                <div class="material-box">
+                    <h4>📘 Study Material</h4>
+
+                    <ul class="note-list">
+                        {% for note in notes %}
+                        {% if note.subject_id == subject.id %}
+                        <li class="note ">
+
+                            <a href="{{ note.file.url }}" target="_blank">
+                                {{ note.title }}
+                            </a>
+
+                            <div class="actions">
+                                <a href="{% url 'pdf_js_viewer' note.id %}" target="_blank">
+                                    <button class="btn open-btn">Open</button>
+                                </a>
+
+                                {% if user.is_staff %}
+                                <form method="POST" action="{% url 'delete_note' note.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn delete-btn"
+                                            onclick="return confirm('Delete this note?');">
+                                        Delete
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+
+                        </li>
+                        {% endif %}
+                        {% empty %}
+                        <p>No study material uploaded.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- ===== PYQs ===== -->
+                <div class="material-box">
+                    <h4>📝 Previous Year Question Papers</h4>
+
+                    <ul class="note-list">
+                        {% for pyq in pyqs %}
+                        {% if pyq.subject_id == subject.id %}
+                        <li class="note">
+
+                            <a href="{{ pyq.file.url }}" target="_blank">
+                                {{ pyq.title }}
+                            </a>
+
+                            <div class="actions">
+                                <a href="{{ pyq.file.url }}" target="_blank">
+                                    <button class="btn open-btn">Open</button>
+                                </a>
+
+                                {% if user.is_staff %}
+                                <form method="POST" action="{% url 'delete_pyq' pyq.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn delete-btn"
+                                            onclick="return confirm('Delete this PYQ?');">
+                                        Delete
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+
+                        </li>
+                        {% endif %}
+                        {% empty %}
+                        <p>No PYQs uploaded.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                <h4>📌 Student Requests</h4>
+
+<ul class="note-list">
+    {% for req in note_requests %}
+    <li class="note request">
+        <div>
+            <strong>{{ req.subject.name }}</strong><br>
+            {{ req.message }}<br>
+            <small style="color:#6b7280;">
+                Requested by {{ req.user.username }} • {{ req.created_at|date:"d M Y H:i" }}
+            </small>
+        </div>
+    </li>
+    {% empty %}
+    <p>No requests yet.</p>
+    {% endfor %}
+</ul>
+</div>
+
+            {% comment %} </div> {% endcomment %}
+        </div>
+        {% endfor %}
+
+    </main>
+
+</div>
+
+<script>
+function showSubject(id) {
+    document.querySelectorAll('[id^="subject-"]').forEach(div => {
+        div.classList.add("hidden");
+    });
+    document.querySelectorAll('.subject').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById("subject-" + id).classList.remove("hidden");
+    event.target.classList.add("active");
+}
+
+</script>
+{% if messages %}
+<div id="toast-container" style="
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+">
+  {% for message in messages %}
+    <div class="toast" style="
+      margin-bottom: 14px;
+      padding: 20px 26px;
+      min-width: 340px;
+      max-width: 440px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      color: white;
+      background: {% if message.tags == 'success' %}#22c55e{% else %}#ef4444{% endif %};
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      transform: scale(0.9);
+      opacity: 0;
+      animation: popIn 0.25s ease-out forwards;
+    ">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>
+
+<script>
+  setTimeout(() => {
+    const toast = document.getElementById("toast-container");
+    if (toast) toast.remove();
+  }, 4000);
+</script>
+{% endif %}
+
+
+</body>
+</html>
