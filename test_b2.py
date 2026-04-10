@@ -8,10 +8,19 @@ s3 = boto3.client(
     region_name="us-west-002",
 )
 
-s3.put_object(
-    Bucket="Study-Material-Exchange",
-    Key="boto3-test.txt",
-    Body=b"hello"
-)
+def upload_text_file(content):
+    try:
+        filename = str(uuid.uuid4()) + ".txt"
 
-print("UPLOAD OK")
+        s3.put_object(
+            Bucket="Study-Material-Exchange",
+            Key=filename,
+            Body=content.encode()
+        )
+
+        print("Uploaded:", filename)
+
+    except Exception as e:
+        print("Error:", e)
+
+upload_text_file("Study material upload test")
