@@ -17,7 +17,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-62%25-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/HTML-37%25-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
-  <img src="https://img.shields.io/github/last-commit/dewanshikarnawat/PrepLP-?style=for-the-badge&color=blueviolet&label=Last+Updated" />
 </p>
 
 <br/>
