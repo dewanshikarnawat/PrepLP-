@@ -275,7 +275,7 @@ DEBUG=True
   </a>
   &nbsp;
   <a href="https://linkedin.com/in/dewanshikarnawat">
-    <img src="https://img.shields.io/badge/LinkedIn-dewanshikarnawat-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+    <img src="https://www.linkedin.com/in/dewanshi-karnawat-388578353/-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   &nbsp;
   <a href="https://www.geeksforgeeks.org/user/dewanshikarnawat/">
